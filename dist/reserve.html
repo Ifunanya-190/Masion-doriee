@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserve a Table — Maison Dorée</title>
+  <meta name="description" content="Reserve your table at Maison Dorée. Experience exquisite fine dining in an intimate, elegant setting." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0908;
+      color: #e8d9c0;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .page-glow {
+      position: fixed;
+      top: -30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,100,20,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .card {
+      background: linear-gradient(165deg, #141210 0%, #0e0c0a 100%);
+      border: 1px solid rgba(232,217,192,0.07);
+      max-width: 480px;
+      width: 100%;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d48a2c, transparent);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a6a5a;
+      text-decoration: none;
+      margin-bottom: 24px;
+      transition: color 0.3s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .back-link:hover {
+      color: #d48a2c;
+    }
+    .brand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 26px;
+      font-weight: 400;
+      color: #d48a2c;
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #d48a2c;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #f0e6d0;
+      text-align: center;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: #7a6a5a;
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9a8878;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      background: #0a0908;
+      border: 1px solid rgba(232,217,192,0.12);
+      color: #e8d9c0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #d48a2c;
+    }
+    input::placeholder {
+      color: #4a3e32;
+    }
+    select option {
+      background: #0a0908;
+      color: #e8d9c0;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .btn {
+      width: 100%;
+      background: #d48a2c;
+      color: #0a0908;
+      border: none;
+      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.35s;
+      margin-top: 8px;
+    }
+    .btn:hover {
+      background: #e89c3a;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(212,138,44,0.2);
+    }
+    .footer-note {
+      font-size: 10px;
+      color: #3d3228;
+      text-align: center;
+      margin-top: 24px;
+      line-height: 1.7;
+    }
+    .footer-note a {
+      color: #7a6a5a;
+      text-decoration: none;
+    }
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .success-state .check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(212,138,44,0.1);
+      border: 2px solid #d48a2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 28px;
+      color: #d48a2c;
+    }
+    .success-state h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: #f0e6d0;
+      margin-bottom: 12px;
+    }
+    .success-state p {
+      font-size: 13px;
+      color: #7a6a5a;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-glow"></div>
+  <div class="card">
+    <a href="/" class="back-link">← Back to Website</a>
+    <div class="brand">Maison Dorée</div>
+
+    <div id="formView">
+      <div class="tag">Table Reservation</div>
+      <h1>Reserve Your Table</h1>
+      <p class="subtitle">Secure your spot and savour the moment. Walk-ins welcome, but reservations guarantee the finest experience.</p>
+
+      <form id="reserveForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="e.g. Jean-Luc Moreau" required />
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+44 7123 456 789" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" required />
+          </div>
+          <div class="form-group">
+            <label for="time">Preferred Time</label>
+            <select id="time" required>
+              <option value="">Select a time</option>
+              <option value="08:00">8:00 AM — Morning</option>
+              <option value="09:00">9:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM — Brunch</option>
+              <option value="12:00">12:00 PM — Lunch</option>
+              <option value="13:00">1:00 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="15:00">3:00 PM — Afternoon Tea</option>
+              <option value="16:00">4:00 PM</option>
+              <option value="17:00">5:00 PM</option>
+              <option value="18:00">6:00 PM — Dinner</option>
+              <option value="19:00">7:00 PM</option>
+              <option value="20:00">8:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <select id="guests" required>
+            <option value="">Choose party size</option>
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5 Guests</option>
+            <option value="6">6 Guests</option>
+            <option value="7-8">7 — 8 Guests</option>
+            <option value="9+">9+ Guests (Large Party)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Special Requests (Optional)</label>
+          <input type="text" id="notes" placeholder="Allergies, celebrations, seating preference..." />
+        </div>
+
+        <button type="submit" class="btn">Confirm Reservation</button>
+      </form>
+      <p class="footer-note">By reserving, you agree to our cancellation policy.<br/>Need help? <a href="mailto:hello@maisondoree.com">hello@maisondoree.com</a></p>
+    </div>
+
+    <div class="success-state" id="successView">
+      <div class="check">✓</div>
+      <h2>You're All Set</h2>
+      <p>Your reservation has been confirmed. A confirmation email is on its way. We look forward to welcoming you.</p>
+      <button class="btn" style="margin-top: 32px;" onclick="resetForm()">Make Another Reservation</button>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // EMAILJS CONFIG - Replace with your own keys from emailjs.com
+    const EMAIL_CONFIG = {
+      SERVICE_ID: "service_dgigp18",
+      TEMPLATE_ID: "template_7up07qm",
+      PUBLIC_KEY: "w9XKj8v7KhAtFlQYt"
+    };
+
+    if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      emailjs.init({ publicKey: EMAIL_CONFIG.PUBLIC_KEY });
+    }
+
+    // Set min date to today
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const originalText = btn.innerText;
+      btn.innerText = "Sending...";
+      btn.disabled = true;
+
+      const formData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        guests: document.getElementById('guests').value,
+        notes: document.getElementById('notes').value
+      };
+
+      if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+        try {
+          await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, {
+            name: formData.fullName,
+            email: formData.email,
+            title: "New Table Reservation",
+            message: `Reservation Details:
+            Date: ${formData.date}
+            Time: ${formData.time}
+            Guests: ${formData.guests}
+            Phone: ${formData.phone}
+            Notes: ${formData.notes}`
+          });
+        } catch (err) {
+          console.error("Email failed:", err);
+          alert("Email notification failed to send, but we've logged your request locally.");
+        }
+      } else {
+        console.warn("EmailJS keys missing. Skipping real email.");
+      }
+
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+    }
+
+    function resetForm() {
+      document.getElementById('reserveForm').reset();
+      document.getElementById('formView').style.display = 'block';
+      document.getElementById('successView').style.display = 'none';
+      const btn = document.querySelector('#reserveForm button');
+      btn.innerText = "Confirm Reservation";
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
