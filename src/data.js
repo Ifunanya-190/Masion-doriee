@@ -1,4 +1,16 @@
+import { LOCAL_IP } from "./ip-config";
+
 export const BRAND = "Maison Dorée";
+
+export const NAV_LINKS = [
+  { id: "home", name: "Home", to: "/", scroll: true },
+  { id: "about", name: "About Us", to: "/about" },
+  { id: "favourites", name: "Favourites", to: "/", scroll: true },
+  { id: "menu", name: "Menu", to: "/", scroll: true },
+  { id: "contact", name: "Contact", to: "/contact" },
+];
+
+export const BASE_URL = `http://${LOCAL_IP}:5000`;
 
 export const FEATURED = [
   { id: 1, name: "Pan-Seared Chilean Sea Bass", desc: "Delicate white fish with citrus beurre blanc, wilted spinach, and micro herbs.", price: "$38.00", tag: "Bestseller", img: "/images/sea-bass.png" },
@@ -59,4 +71,10 @@ export const MEAL_BUILDER = {
     { name: "King Prawns (3)", price: 14, emoji: "🦐" },
     { name: "Cheese Board", price: 12, emoji: "🧀" },
   ],
+};
+
+export const EMAIL_CONFIG = {
+  SERVICE_ID: "service_dgigp18",
+  TEMPLATE_ID: "template_7up07qm",
+  PUBLIC_KEY: "w9XKj8v7KhAtFlQYt",
 };

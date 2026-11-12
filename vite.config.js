@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import fs from 'node:fs'
 import os from 'node:os'
 
-// Automatically find local IP and write to src/ip-config.js
 function getLocalIP() {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
@@ -29,6 +28,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5000,
-    host: true
+    host: true,
+    headers: {
+      "Content-Security-Policy": "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com;"
+    }
   }
 })

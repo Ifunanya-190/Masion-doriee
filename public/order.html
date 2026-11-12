@@ -3,470 +3,385 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Order & Collect — Maison Dorée</title>
-  <meta name="description" content="Browse the Maison Dorée menu, build your order, and enjoy fine dining at home." />
+  <title>Order — Maison Dorée</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0a0908;
-      color: #e8d9c0;
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-      padding: 24px;
-    }
-    .page-glow {
-      position: fixed;
-      top: -20%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 500px;
-      background: radial-gradient(ellipse, rgba(200,100,20,0.04) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .container {
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    .header {
-      text-align: center;
-      padding: 20px 0 40px;
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #7a6a5a;
-      text-decoration: none;
-      margin-bottom: 24px;
-      transition: color 0.3s;
-      font-family: 'Montserrat', sans-serif;
-    }
-    .back-link:hover {
-      color: #d48a2c;
-    }
-    .brand {
-      font-family: 'Great Vibes', cursive;
-      font-size: 26px;
-      font-weight: 400;
-      color: #d48a2c;
-      letter-spacing: 0.02em;
-      margin-bottom: 24px;
-    }
-    .tag {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #d48a2c;
-      margin-bottom: 8px;
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: #f0e6d0;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      font-size: 12px;
-      color: #7a6a5a;
-      line-height: 1.7;
-    }
+    body { background: #0a0908; color: #e8d9c0; font-family: 'Montserrat', sans-serif; min-height: 100vh; padding: 24px 24px 60px; }
+    .page-glow { position: fixed; top: -20%; left: 50%; transform: translateX(-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(200,100,20,0.04) 0%, transparent 70%); pointer-events: none; }
+    .container { max-width: 620px; margin: 0 auto; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7a6a5a; text-decoration: none; margin: 16px 0 28px; transition: color 0.3s; }
+    .back-link:hover { color: #d48a2c; }
+    .brand { font-family: 'Great Vibes', cursive; font-size: 26px; color: #d48a2c; text-align: center; margin-bottom: 20px; }
 
-    /* Category Filter Tabs */
-    .filter-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-    .filter-tab {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #7a6a5a;
-      background: transparent;
-      border: 1px solid rgba(232,217,192,0.1);
-      padding: 8px 18px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .filter-tab:hover {
-      border-color: rgba(212,138,44,0.3);
-      color: #c8b99a;
-    }
-    .filter-tab.active {
-      background: rgba(212,138,44,0.1);
-      border-color: rgba(212,138,44,0.4);
-      color: #d48a2c;
-    }
+    /* ── ORDER TYPE CHOOSER ── */
+    #orderTypeScreen { animation: fadeUp 0.4s ease; }
+    .chooser-heading { text-align: center; margin-bottom: 36px; }
+    .chooser-heading .tag { font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #d48a2c; margin-bottom: 8px; }
+    .chooser-heading h1 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #f0e6d0; margin-bottom: 8px; }
+    .chooser-heading p { font-size: 12px; color: #7a6a5a; line-height: 1.7; }
+    .type-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+    .type-card { background: #111009; border: 1px solid rgba(232,217,192,0.07); padding: 32px 24px; cursor: pointer; transition: all 0.35s; text-align: center; position: relative; overflow: hidden; }
+    .type-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #d48a2c, transparent); opacity: 0; transition: opacity 0.35s; }
+    .type-card:hover { border-color: rgba(212,138,44,0.35); background: #161210; transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .type-card:hover::before { opacity: 1; }
+    .type-card-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .type-card h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #f0e6d0; margin-bottom: 10px; }
+    .type-card p { font-size: 11px; color: #6b5e50; line-height: 1.8; }
+    .type-card .type-tag { display: inline-block; margin-top: 16px; font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #d48a2c; border: 1px solid rgba(212,138,44,0.25); padding: 5px 12px; }
+    .divider-gold { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, #d48a2c, transparent); margin: 0 auto 32px; }
 
-    .menu-section {
-      margin-bottom: 36px;
-    }
-    .menu-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      color: #c8b99a;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(232,217,192,0.06);
-    }
-    .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(232,217,192,0.04);
-      transition: background 0.3s;
-    }
-    .menu-item:hover {
-      background: rgba(232,217,192,0.02);
-      margin: 0 -12px;
-      padding: 16px 12px;
-    }
-    .item-info h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      font-weight: 600;
-      color: #e8d9c0;
-      margin-bottom: 3px;
-    }
-    .item-info .detail {
-      font-size: 11px;
-      color: #5a4e42;
-    }
-    .item-info .badges {
-      display: inline-flex;
-      gap: 6px;
-      margin-left: 8px;
-      font-size: 13px;
-      vertical-align: middle;
-    }
-    .item-price {
-      font-family: 'Playfair Display', serif;
-      font-size: 16px;
-      color: #d48a2c;
-      margin-right: 16px;
-      white-space: nowrap;
-    }
-    .item-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
-    .qty-btn {
-      width: 30px;
-      height: 30px;
-      background: transparent;
-      border: 1px solid rgba(232,217,192,0.12);
-      color: #c8b99a;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.25s;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .qty-btn:hover {
-      border-color: #d48a2c;
-      color: #d48a2c;
-    }
-    .qty-val {
-      width: 32px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: #e8d9c0;
-      border-top: 1px solid rgba(232,217,192,0.12);
-      border-bottom: 1px solid rgba(232,217,192,0.12);
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .divider {
-      width: 40px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #d48a2c, transparent);
-      margin: 40px auto;
-    }
-    .pickup-section {
-      background: #111;
-      border: 1px solid rgba(232,217,192,0.07);
-      padding: 28px;
-      margin-bottom: 24px;
-    }
-    .pickup-section label {
-      display: block;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9a8878;
-      margin-bottom: 8px;
-    }
-    .pickup-section select, .pickup-section input {
-      width: 100%;
-      background: #0a0908;
-      border: 1px solid rgba(232,217,192,0.12);
-      color: #e8d9c0;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      padding: 12px 14px;
-      outline: none;
-      transition: border-color 0.3s;
-      margin-bottom: 16px;
-    }
-    .pickup-section select:focus, .pickup-section input:focus {
-      border-color: #d48a2c;
-    }
-    .pickup-section select option {
-      background: #0a0908;
-    }
-    .order-summary {
-      background: #141210;
-      border: 1px solid rgba(232,217,192,0.07);
-      padding: 24px 28px;
-      margin-bottom: 16px;
-    }
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: #7a6a5a;
-      margin-bottom: 10px;
-    }
-    .summary-row.total {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      color: #f0e6d0;
-      border-top: 1px solid rgba(232,217,192,0.08);
-      padding-top: 14px;
-      margin-top: 14px;
-      margin-bottom: 0;
-    }
-    .summary-row.total span:last-child {
-      color: #d48a2c;
-    }
-    .btn {
-      width: 100%;
-      background: #d48a2c;
-      color: #0a0908;
-      border: none;
-      padding: 16px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.35s;
-    }
-    .btn:hover {
-      background: #e89c3a;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 30px rgba(212,138,44,0.2);
-    }
-    .btn:disabled {
-      background: #3d3228;
-      color: #7a6a5a;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-    .footer-note {
-      font-size: 10px;
-      color: #3d3228;
-      text-align: center;
-      margin-top: 24px;
-      padding-bottom: 32px;
-      line-height: 1.7;
-    }
-    .success-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .success-card {
-      background: #141210;
-      border: 1px solid rgba(212,138,44,0.2);
-      padding: 48px 40px;
-      max-width: 420px;
-      text-align: center;
-    }
-    .success-card .check {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(212,138,44,0.1);
-      border: 2px solid #d48a2c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 28px;
-      color: #d48a2c;
-    }
-    .success-card h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      color: #f0e6d0;
-      margin-bottom: 12px;
-    }
-    .success-card p {
-      font-size: 13px;
-      color: #7a6a5a;
-      line-height: 1.7;
-    }
-    @media (max-width: 480px) {
-      .menu-item { flex-wrap: wrap; gap: 10px; }
+    /* ── SHARED MENU STYLES ── */
+    #pickupScreen, #prereserveScreen { display: none; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .screen-header { text-align: center; margin-bottom: 32px; }
+    .screen-header .tag { font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #d48a2c; margin-bottom: 8px; }
+    .screen-header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #f0e6d0; margin-bottom: 8px; }
+    .screen-header p { font-size: 12px; color: #7a6a5a; line-height: 1.7; }
+    .switch-type { display: inline-block; margin-top: 10px; font-size: 10px; color: #5a4e42; cursor: pointer; text-decoration: underline; transition: color 0.3s; }
+    .switch-type:hover { color: #d48a2c; }
+
+    .filter-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+    .filter-tab { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #7a6a5a; background: transparent; border: 1px solid rgba(232,217,192,0.1); padding: 8px 18px; cursor: pointer; transition: all 0.3s; }
+    .filter-tab:hover { border-color: rgba(212,138,44,0.3); color: #c8b99a; }
+    .filter-tab.active { background: rgba(212,138,44,0.1); border-color: rgba(212,138,44,0.4); color: #d48a2c; }
+
+    .menu-section { margin-bottom: 36px; }
+    .menu-section h2 { font-family: 'Playfair Display', serif; font-size: 17px; color: #c8b99a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(232,217,192,0.06); display: flex; align-items: center; gap: 10px; }
+    .menu-section h2 span { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5a4e42; font-family: 'Montserrat', sans-serif; }
+
+    .menu-item { padding: 14px 0; border-bottom: 1px solid rgba(232,217,192,0.04); transition: all 0.3s; }
+    .menu-item:hover { background: rgba(232,217,192,0.02); margin: 0 -12px; padding: 14px 12px; }
+    .menu-item-main { display: flex; align-items: center; justify-content: space-between; }
+    .item-info h3 { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: #e8d9c0; margin-bottom: 3px; }
+    .item-info .detail { font-size: 11px; color: #5a4e42; line-height: 1.6; }
+    .item-badges { display: inline-flex; gap: 4px; margin-left: 6px; font-size: 12px; vertical-align: middle; }
+    .item-price { font-family: 'Playfair Display', serif; font-size: 16px; color: #d48a2c; margin-right: 14px; white-space: nowrap; }
+    .item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .qty-controls { display: flex; align-items: center; }
+    .qty-btn { width: 28px; height: 28px; background: transparent; border: 1px solid rgba(232,217,192,0.12); color: #c8b99a; font-size: 16px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; }
+    .qty-btn:hover { border-color: #d48a2c; color: #d48a2c; }
+    .qty-val { width: 30px; text-align: center; font-size: 13px; font-weight: 600; color: #e8d9c0; border-top: 1px solid rgba(232,217,192,0.12); border-bottom: 1px solid rgba(232,217,192,0.12); height: 28px; display: flex; align-items: center; justify-content: center; }
+
+    .item-note-wrap { display: none; padding: 8px 0 4px; }
+    .item-note-wrap.open { display: block; animation: fadeUp 0.3s ease; }
+    .item-note { width: 100%; background: #0a0908; border: 1px solid rgba(232,217,192,0.08); color: #c8b99a; font-family: 'Montserrat', sans-serif; font-size: 12px; padding: 8px 12px; outline: none; transition: border-color 0.3s; resize: none; }
+    .item-note:focus { border-color: rgba(212,138,44,0.3); }
+    .note-toggle { font-size: 10px; color: #4a3e42; cursor: pointer; margin-top: 4px; display: inline-block; transition: color 0.3s; letter-spacing: 0.06em; }
+    .note-toggle:hover { color: #d48a2c; }
+
+    .divider { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, #d48a2c, transparent); margin: 36px auto; }
+
+    /* ── PICKUP DETAILS ── */
+    .pickup-section { background: #111; border: 1px solid rgba(232,217,192,0.07); padding: 28px; margin-bottom: 20px; }
+    .pickup-section label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #9a8878; margin-bottom: 8px; }
+    .pickup-section input, .pickup-section select { width: 100%; background: #0a0908; border: 1px solid rgba(232,217,192,0.12); color: #e8d9c0; font-family: 'Montserrat', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.3s; margin-bottom: 16px; appearance: none; }
+    .pickup-section input:focus, .pickup-section select:focus { border-color: #d48a2c; }
+    .pickup-section select option { background: #0a0908; }
+    .pickup-section input:last-child, .pickup-section select:last-child { margin-bottom: 0; }
+
+    .ready-estimate { font-size: 11px; color: #6b5e50; margin-top: -10px; margin-bottom: 16px; letter-spacing: 0.04em; }
+    .ready-estimate strong { color: #d48a2c; }
+
+    /* ── PRE-RESERVE DETAILS ── */
+    .prereserve-info { background: rgba(212,138,44,0.04); border: 1px solid rgba(212,138,44,0.15); padding: 18px 20px; margin-bottom: 24px; }
+    .prereserve-info p { font-size: 12px; color: #8a7a68; line-height: 1.8; }
+    .prereserve-info strong { color: #d48a2c; }
+    .prereserve-ref { display: flex; gap: 10px; margin-top: 12px; }
+    .prereserve-ref input { flex: 1; background: #0a0908; border: 1px solid rgba(232,217,192,0.12); color: #e8d9c0; font-family: 'Montserrat', sans-serif; font-size: 13px; padding: 10px 14px; outline: none; transition: border-color 0.3s; }
+    .prereserve-ref input:focus { border-color: #d48a2c; }
+    .prereserve-ref input::placeholder { color: #4a3e32; }
+    .prereserve-ref button { background: rgba(212,138,44,0.1); border: 1px solid rgba(212,138,44,0.25); color: #d48a2c; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 16px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+    .prereserve-ref button:hover { background: rgba(212,138,44,0.15); }
+
+    /* ── ORDER SUMMARY ── */
+    .order-summary { background: #141210; border: 1px solid rgba(232,217,192,0.07); padding: 24px 28px; margin-bottom: 16px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: #7a6a5a; margin-bottom: 10px; align-items: flex-start; gap: 8px; }
+    .summary-row .item-note-summary { font-size: 10px; color: #4a3e42; margin-top: 2px; font-style: italic; }
+    .summary-row.total { font-family: 'Playfair Display', serif; font-size: 20px; color: #f0e6d0; border-top: 1px solid rgba(232,217,192,0.08); padding-top: 14px; margin-top: 14px; margin-bottom: 0; }
+    .summary-row.total span:last-child { color: #d48a2c; }
+
+    .btn { width: 100%; background: #d48a2c; color: #0a0908; border: none; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: all 0.35s; }
+    .btn:hover { background: #e89c3a; transform: translateY(-1px); box-shadow: 0 8px 30px rgba(212,138,44,0.2); }
+    .btn:disabled { background: #3d3228; color: #7a6a5a; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .footer-note { font-size: 10px; color: #3d3228; text-align: center; margin-top: 24px; line-height: 1.7; }
+
+    /* ── SUCCESS OVERLAY ── */
+    .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
+    .success-card { background: #141210; border: 1px solid rgba(212,138,44,0.2); padding: 48px 40px; max-width: 460px; width: 100%; text-align: center; position: relative; animation: fadeUp 0.5s ease; }
+    .success-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #d48a2c, transparent); }
+    .check-circle { width: 68px; height: 68px; border-radius: 50%; background: rgba(212,138,44,0.08); border: 2px solid #d48a2c; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 28px; color: #d48a2c; animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275); }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-card h2 { font-family: 'Playfair Display', serif; font-size: 26px; color: #f0e6d0; margin-bottom: 8px; }
+    .success-card .order-type-label { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #d48a2c; margin-bottom: 16px; display: block; }
+    .ref-badge { display: inline-block; background: rgba(212,138,44,0.08); border: 1px solid rgba(212,138,44,0.2); padding: 8px 20px; font-family: 'Playfair Display', serif; font-size: 20px; color: #d48a2c; letter-spacing: 0.08em; margin: 12px 0 20px; }
+    .success-card p { font-size: 13px; color: #7a6a5a; line-height: 1.75; }
+    .success-summary { background: #0f0d0b; border: 1px solid rgba(232,217,192,0.06); padding: 16px 20px; text-align: left; margin: 20px 0; }
+    .success-summary-row { display: flex; justify-content: space-between; font-size: 12px; color: #6b5e50; padding: 5px 0; border-bottom: 1px solid rgba(232,217,192,0.04); }
+    .success-summary-row:last-child { border-bottom: none; }
+    .success-summary-row span:last-child { color: #c8b99a; }
+    .ready-badge { display: inline-block; margin: 12px 0 20px; font-size: 12px; color: #9a8878; }
+    .ready-badge strong { color: #d48a2c; font-size: 15px; }
+    .success-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .sec-btn { padding: 13px; border: 1px solid rgba(232,217,192,0.08); background: transparent; color: #7a6a5a; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-decoration: none; display: block; text-align: center; transition: all 0.3s; }
+    .sec-btn:hover { border-color: rgba(212,138,44,0.2); color: #c8b99a; }
+
+    @media (max-width: 520px) {
+      .type-cards { grid-template-columns: 1fr; }
+      .menu-item-main { flex-wrap: wrap; gap: 10px; }
       .item-right { width: 100%; justify-content: space-between; }
+      .success-card { padding: 36px 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="page-glow"></div>
-  <div class="container">
-    <a href="/" class="back-link" style="margin-top: 16px;">← Back to Website</a>
-    <div class="header">
-      <div class="brand">Maison Dorée</div>
-      <div class="tag">Order & Collect</div>
+<div class="page-glow"></div>
+<div class="container">
+  <a href="/" class="back-link">← Back to Website</a>
+  <div class="brand">Maison Dorée</div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 0 — ORDER TYPE CHOOSER
+  ══════════════════════════════════════ -->
+  <div id="orderTypeScreen">
+    <div class="chooser-heading">
+      <div class="tag">How would you like to order?</div>
+      <h1>Choose Your Experience</h1>
+      <p>Whether you're ordering from home or planning ahead for your table, we're ready for you.</p>
+    </div>
+    <div class="divider-gold"></div>
+    <div class="type-cards">
+      <!-- PICKUP -->
+      <div class="type-card" onclick="showScreen('pickup')">
+        <span class="type-card-icon">🛵</span>
+        <h2>Order & Collect</h2>
+        <p>Browse our full menu, place your order online, and collect it fresh from our kitchen at your chosen time.</p>
+        <span class="type-tag">Pickup Order</span>
+      </div>
+      <!-- PRE-RESERVE -->
+      <div class="type-card" onclick="showScreen('prereserve')">
+        <span class="type-card-icon">🍽</span>
+        <h2>Pre-order for Table</h2>
+        <p>Already have a reservation? Select your dishes in advance and have everything ready the moment you arrive.</p>
+        <span class="type-tag">Dine-In Pre-order</span>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:11px;color:#3d3028;margin-top:8px;">Both options are prepared fresh by our chefs · Payment at collection or table</p>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 1 — PICKUP ORDER
+  ══════════════════════════════════════ -->
+  <div id="pickupScreen">
+    <div class="screen-header">
+      <div class="tag">Pickup Order</div>
       <h1>Build Your Order</h1>
-      <p class="subtitle">Browse our menu, pick your favourites, choose a collection time, and we'll have it freshly prepared.</p>
+      <p>Order from home, we'll prepare everything fresh. Just come collect when it's ready.</p>
+      <span class="switch-type" onclick="showScreen('choose')">← Choose a different order type</span>
     </div>
 
-    <!-- Category Filter Tabs -->
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterCategory('all')">All</button>
-      <button class="filter-tab" onclick="filterCategory('mains')">Mains</button>
-      <button class="filter-tab" onclick="filterCategory('seafood')">Seafood</button>
-      <button class="filter-tab" onclick="filterCategory('starters')">Starters</button>
+    <div class="filter-tabs" id="pickupTabs">
+      <button class="filter-tab active" onclick="filterCategory(this,'all','pickup')">All</button>
+      <button class="filter-tab" onclick="filterCategory(this,'signature','pickup')">Signature</button>
+      <button class="filter-tab" onclick="filterCategory(this,'seafood','pickup')">Seafood</button>
+      <button class="filter-tab" onclick="filterCategory(this,'starters','pickup')">Starters</button>
+      <button class="filter-tab" onclick="filterCategory(this,'desserts','pickup')">Desserts</button>
+      <button class="filter-tab" onclick="filterCategory(this,'drinks','pickup')">Drinks</button>
     </div>
 
-    <div class="menu-section" id="section-signature">
-      <h2>Signature Dishes</h2>
-      <div class="menu-item" data-name="Pan-Seared Chilean Sea Bass" data-price="38.00" data-category="seafood mains">
-        <div class="item-info">
-          <h3>Pan-Seared Chilean Sea Bass <span class="badges">⭐</span></h3>
-          <div class="detail">Citrus beurre blanc · spinach · micro herbs</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$38.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+    <div id="pickupMenu">
+      <!-- SIGNATURE -->
+      <div class="menu-section" data-section="signature">
+        <h2>Signature Dishes <span>Chef Recommends</span></h2>
+        <div class="menu-item" data-name="Pan-Seared Chilean Sea Bass" data-price="38.00" data-category="signature seafood">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Pan-Seared Chilean Sea Bass <span class="item-badges">⭐</span></h3><div class="detail">Citrus beurre blanc · wilted spinach · micro herbs</div></div>
+            <div class="item-right"><div class="item-price">$38.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
           </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. no herbs, extra lemon..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Wagyu Beef Tenderloin" data-price="52.00" data-category="signature">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Wagyu Beef Tenderloin <span class="item-badges">⭐</span></h3><div class="detail">A5 grade · black truffle jus · garlic mash · haricots verts</div></div>
+            <div class="item-right"><div class="item-price">$52.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. medium rare, no garlic..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Truffle Risotto al Parmigiano" data-price="34.00" data-category="signature">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Truffle Risotto al Parmigiano <span class="item-badges">🌿</span></h3><div class="detail">Black truffle · aged parmigiano · mascarpone · chives</div></div>
+            <div class="item-right"><div class="item-price">$34.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. less truffle..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Herb-Crusted Lamb Rack" data-price="46.00" data-category="signature">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Herb-Crusted Lamb Rack</h3><div class="detail">Provençal herb crust · rosemary jus · roasted root vegetables</div></div>
+            <div class="item-right"><div class="item-price">$46.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. well done, extra sauce..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Duck Confit à l'Orange" data-price="42.00" data-category="signature">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Duck Confit à l'Orange <span class="item-badges">⭐</span></h3><div class="detail">Slow-cooked duck leg · orange reduction · dauphinoise potatoes</div></div>
+            <div class="item-right"><div class="item-price">$42.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. extra crispy skin..."></textarea></div>
         </div>
       </div>
-      <div class="menu-item" data-name="Wagyu Beef Tenderloin" data-price="52.00" data-category="mains">
-        <div class="item-info">
-          <h3>Wagyu Beef Tenderloin <span class="badges">⭐</span></h3>
-          <div class="detail">A5 grade · truffle jus · garlic mash</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$52.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-item" data-name="Truffle Risotto al Parmigiano" data-price="34.00" data-category="mains">
-        <div class="item-info">
-          <h3>Truffle Risotto al Parmigiano <span class="badges">🌿</span></h3>
-          <div class="detail">Black truffle · aged parmigiano · mascarpone</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$34.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-item" data-name="Herb-Crusted Lamb Rack" data-price="46.00" data-category="mains">
-        <div class="item-info">
-          <h3>Herb-Crusted Lamb Rack</h3>
-          <div class="detail">Herb crust · rosemary jus · roasted root veg</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$46.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="menu-section" id="section-starters">
-      <h2>Starters & Sides</h2>
-      <div class="menu-item" data-name="Grilled Mediterranean Prawns" data-price="28.00" data-category="seafood starters">
-        <div class="item-info">
-          <h3>Grilled Mediterranean Prawns</h3>
-          <div class="detail">Garlic butter · lemon · fresh herbs</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$28.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+      <!-- SEAFOOD -->
+      <div class="menu-section" data-section="seafood">
+        <h2>From the Sea <span>Freshly Sourced Daily</span></h2>
+        <div class="menu-item" data-name="Grilled Mediterranean Prawns" data-price="28.00" data-category="seafood starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Grilled Mediterranean Prawns</h3><div class="detail">Wild-caught · garlic butter · lemon · fresh herbs</div></div>
+            <div class="item-right"><div class="item-price">$28.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
           </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. extra garlic..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Saffron Lobster Tail" data-price="58.00" data-category="seafood">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Saffron Lobster Tail <span class="item-badges">⭐</span></h3><div class="detail">Saffron butter · asparagus · Oscietra caviar</div></div>
+            <div class="item-right"><div class="item-price">$58.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. no caviar..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Bouillabaisse Royale" data-price="44.00" data-category="seafood">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Bouillabaisse Royale</h3><div class="detail">Marseille-style · mixed fish & shellfish · saffron broth · rouille</div></div>
+            <div class="item-right"><div class="item-price">$44.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. mild spice..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Scallops en Croûte" data-price="36.00" data-category="seafood starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Scallops en Croûte</h3><div class="detail">King scallops · puff pastry · leek cream · chervil oil</div></div>
+            <div class="item-right"><div class="item-price">$36.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
         </div>
       </div>
-      <div class="menu-item" data-name="Mushroom & Thyme Ravioli" data-price="26.00" data-category="starters">
-        <div class="item-info">
-          <h3>Mushroom & Thyme Ravioli <span class="badges">🌿</span></h3>
-          <div class="detail">Wild mushroom · thyme cream · parmesan</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$26.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+
+      <!-- STARTERS -->
+      <div class="menu-section" data-section="starters">
+        <h2>Starters & Small Plates <span>To Begin</span></h2>
+        <div class="menu-item" data-name="Mushroom & Thyme Ravioli" data-price="26.00" data-category="starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Mushroom & Thyme Ravioli <span class="item-badges">🌿</span></h3><div class="detail">Wild mushroom · thyme cream · aged parmesan foam</div></div>
+            <div class="item-right"><div class="item-price">$26.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
           </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Foie Gras Torchon" data-price="32.00" data-category="starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Foie Gras Torchon</h3><div class="detail">Brioche · fig chutney · port reduction · sea salt flakes</div></div>
+            <div class="item-right"><div class="item-price">$32.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Burrata & Heirloom Tomato" data-price="22.00" data-category="starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Burrata & Heirloom Tomato <span class="item-badges">🌿</span></h3><div class="detail">Stracciatella · basil oil · aged balsamic · Maldon salt</div></div>
+            <div class="item-right"><div class="item-price">$22.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="French Onion Soup" data-price="18.00" data-category="starters">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>French Onion Soup</h3><div class="detail">Caramelised onion · beef broth · Gruyère croûton</div></div>
+            <div class="item-right"><div class="item-price">$18.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
         </div>
       </div>
-      <div class="menu-item" data-name="Saffron Lobster Tail" data-price="58.00" data-category="seafood starters">
-        <div class="item-info">
-          <h3>Saffron Lobster Tail</h3>
-          <div class="detail">Saffron butter · asparagus · caviar</div>
-        </div>
-        <div class="item-right">
-          <div class="item-price">$58.00</div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-            <div class="qty-val">0</div>
-            <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+
+      <!-- DESSERTS -->
+      <div class="menu-section" data-section="desserts">
+        <h2>Desserts <span>Sweet Finales</span></h2>
+        <div class="menu-item" data-name="Valrhona Chocolate Fondant" data-price="18.00" data-category="desserts">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Valrhona Chocolate Fondant <span class="item-badges">⭐</span></h3><div class="detail">70% dark chocolate · salted caramel core · vanilla ice cream</div></div>
+            <div class="item-right"><div class="item-price">$18.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
           </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. extra ice cream..."></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Crème Brûlée Classique" data-price="14.00" data-category="desserts">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Crème Brûlée Classique</h3><div class="detail">Madagascar vanilla · burnt sugar crust · fresh berries</div></div>
+            <div class="item-right"><div class="item-price">$14.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Tarte Tatin" data-price="16.00" data-category="desserts">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Tarte Tatin</h3><div class="detail">Caramelised apple · puff pastry · Calvados crème fraîche</div></div>
+            <div class="item-right"><div class="item-price">$16.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Cheese Board Selection" data-price="22.00" data-category="desserts">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Cheese Board Selection <span class="item-badges">🧀</span></h3><div class="detail">5 artisan cheeses · quince paste · walnuts · crackers</div></div>
+            <div class="item-right"><div class="item-price">$22.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+      </div>
+
+      <!-- DRINKS -->
+      <div class="menu-section" data-section="drinks">
+        <h2>Drinks <span>Curated Selection</span></h2>
+        <div class="menu-item" data-name="House Red Wine (Bottle)" data-price="48.00" data-category="drinks">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>House Red Wine</h3><div class="detail">Burgundy Pinot Noir · full bottle · 2021 vintage</div></div>
+            <div class="item-right"><div class="item-price">$48.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Champagne Brut (Bottle)" data-price="85.00" data-category="drinks">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Champagne Brut <span class="item-badges">🥂</span></h3><div class="detail">Moët & Chandon · Impérial Brut · full bottle</div></div>
+            <div class="item-right"><div class="item-price">$85.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Sparkling Water (1L)" data-price="6.00" data-category="drinks">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Sparkling Water</h3><div class="detail">San Pellegrino · 1 litre</div></div>
+            <div class="item-right"><div class="item-price">$6.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder=""></textarea></div>
+        </div>
+        <div class="menu-item" data-name="Freshly Squeezed Juice" data-price="8.00" data-category="drinks">
+          <div class="menu-item-main">
+            <div class="item-info"><h3>Freshly Squeezed Juice</h3><div class="detail">Orange, grapefruit, or watermelon · served chilled</div></div>
+            <div class="item-right"><div class="item-price">$8.00</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(this,-1,'pickup')">−</button><div class="qty-val">0</div><button class="qty-btn" onclick="changeQty(this,1,'pickup')">+</button></div></div>
+          </div>
+          <span class="note-toggle" onclick="toggleNote(this)">+ Add special request</span>
+          <div class="item-note-wrap"><textarea class="item-note" rows="2" placeholder="e.g. orange please..."></textarea></div>
         </div>
       </div>
     </div>
@@ -477,175 +392,305 @@
       <label for="pickupName">Your Name</label>
       <input type="text" id="pickupName" placeholder="Name for your order" />
       <label for="pickupTime">Collection Time</label>
-      <select id="pickupTime">
-        <option value="">Choose a pickup time</option>
-        <option>In 30 minutes</option>
-        <option>In 1 hour</option>
-        <option>In 2 hours</option>
-        <option>Tomorrow morning (8 AM)</option>
-        <option>Tomorrow afternoon (2 PM)</option>
+      <select id="pickupTime" onchange="updateReadyEstimate()">
+        <option value="">Choose a collection time</option>
+        <option value="30">In 30 minutes</option>
+        <option value="60">In 1 hour</option>
+        <option value="120">In 2 hours</option>
+        <option value="480">Tomorrow morning (8 AM)</option>
+        <option value="840">Tomorrow afternoon (2 PM)</option>
       </select>
+      <div class="ready-estimate" id="readyEstimate"></div>
     </div>
 
-    <div class="order-summary" id="orderSummary">
-      <div id="summaryItems"></div>
-      <div class="summary-row total">
-        <span>Total</span>
-        <span id="totalPrice">$0.00</span>
+    <div class="order-summary" id="pickupSummary">
+      <div id="pickupSummaryItems"></div>
+      <div class="summary-row total"><span>Total</span><span id="pickupTotal">$0.00</span></div>
+    </div>
+    <button class="btn" id="pickupOrderBtn" disabled onclick="placeOrder('pickup')">Place Pickup Order</button>
+    <p class="footer-note">Payment collected at pickup · Freshly prepared by our chefs<br/>Questions? <a href="mailto:hello@maisondoree.com" style="color:#5a4e42;">hello@maisondoree.com</a></p>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 2 — PRE-ORDER FOR TABLE
+  ══════════════════════════════════════ -->
+  <div id="prereserveScreen">
+    <div class="screen-header">
+      <div class="tag">Dine-In Pre-order</div>
+      <h1>Pre-order for Your Table</h1>
+      <p>Select your dishes in advance. Everything will be ready and waiting the moment you're seated.</p>
+      <span class="switch-type" onclick="showScreen('choose')">← Choose a different order type</span>
+    </div>
+
+    <div class="prereserve-info">
+      <p>Enter your <strong>reservation reference</strong> (e.g. MDR-2847) to link your pre-order to your booking. No reference? Leave it blank and we'll match by name.</p>
+      <div class="prereserve-ref">
+        <input type="text" id="reservationRef" placeholder="MDR-XXXX (optional)" />
+        <button onclick="linkReservation()">Link Booking</button>
       </div>
+      <div id="refStatus" style="font-size:11px;margin-top:8px;color:#6b5e50;"></div>
     </div>
 
-    <button class="btn" id="placeOrderBtn" disabled onclick="placeOrder()">Place Order</button>
-    <p class="footer-note">Payment is collected at pickup. Each dish is freshly prepared by our chefs.<br/>Questions? Contact us at hello@maisondoree.com</p>
+    <div class="filter-tabs" id="prereserveTabs">
+      <button class="filter-tab active" onclick="filterCategory(this,'all','prereserve')">All</button>
+      <button class="filter-tab" onclick="filterCategory(this,'signature','prereserve')">Signature</button>
+      <button class="filter-tab" onclick="filterCategory(this,'seafood','prereserve')">Seafood</button>
+      <button class="filter-tab" onclick="filterCategory(this,'starters','prereserve')">Starters</button>
+      <button class="filter-tab" onclick="filterCategory(this,'desserts','prereserve')">Desserts</button>
+      <button class="filter-tab" onclick="filterCategory(this,'drinks','prereserve')">Drinks</button>
+    </div>
+
+    <div id="prereserveMenu"></div>
+
+    <div class="divider"></div>
+
+    <div class="pickup-section">
+      <label for="prereserveName">Your Name</label>
+      <input type="text" id="prereserveName" placeholder="Name on the reservation" />
+      <label for="prereserveNotes">Any notes for the kitchen?</label>
+      <input type="text" id="prereserveNotes" placeholder="Allergies, dietary requirements, timing preferences..." />
+    </div>
+
+    <div class="order-summary" id="prereserveSummaryBox">
+      <div id="prereserveSummaryItems"></div>
+      <div class="summary-row total"><span>Total</span><span id="prereserveTotal">$0.00</span></div>
+    </div>
+    <button class="btn" id="prereserveOrderBtn" disabled onclick="placeOrder('prereserve')">Confirm Pre-order</button>
+    <p class="footer-note">Payment at your table · Your dishes will be prepared to arrive with your course timing<br/>Questions? <a href="mailto:hello@maisondoree.com" style="color:#5a4e42;">hello@maisondoree.com</a></p>
   </div>
 
-  <div class="success-overlay" id="successOverlay">
-    <div class="success-card">
-      <div class="check">✓</div>
-      <h2>Order Placed!</h2>
-      <p>Your order has been received and our kitchen is preparing it now. Please collect at your selected time. Thank you for dining with us!</p>
-      <button class="btn" style="margin-top: 28px;" onclick="location.reload()">Place Another Order</button>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="check-circle">✓</div>
+    <span class="order-type-label" id="successTypeLabel"></span>
+    <h2 id="successTitle"></h2>
+    <div class="ref-badge" id="successRef"></div>
+    <p id="successMsg"></p>
+    <div class="success-summary" id="successSummary"></div>
+    <div class="ready-badge" id="successReadyBadge"></div>
+    <div class="success-actions">
+      <a href="/reserve.html" class="sec-btn" id="successReserveLink">Reserve a Table →</a>
+      <button class="btn" onclick="resetAll()" style="margin-top:4px;">Place Another Order</button>
     </div>
   </div>
+</div>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    // EMAILJS CONFIG - Replace with your own keys from emailjs.com
-    const EMAIL_CONFIG = {
-      SERVICE_ID: "service_dgigp18",
-      TEMPLATE_ID: "template_7up07qm",
-      PUBLIC_KEY: "w9XKj8v7KhAtFlQYt"
-    };
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  const EMAIL_CONFIG = { SERVICE_ID:"service_dgigp18", TEMPLATE_ID:"template_7up07qm", PUBLIC_KEY:"w9XKj8v7KhAtFlQYt" };
+  if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") emailjs.init({ publicKey: EMAIL_CONFIG.PUBLIC_KEY });
 
-    if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-      emailjs.init({ publicKey: EMAIL_CONFIG.PUBLIC_KEY });
+  // ── Clone menu into prereserve section ──
+  window.addEventListener('DOMContentLoaded', () => {
+    const src = document.getElementById('pickupMenu');
+    const dst = document.getElementById('prereserveMenu');
+    const clone = src.cloneNode(true);
+    clone.id = 'prereserveMenuInner';
+    // fix onclick references to use 'prereserve' scope
+    clone.querySelectorAll('.qty-btn').forEach(btn => {
+      const cur = btn.getAttribute('onclick');
+      if (cur) btn.setAttribute('onclick', cur.replace("'pickup'","'prereserve'"));
+    });
+    dst.appendChild(clone);
+    updateSummary('pickup');
+    updateSummary('prereserve');
+
+    // pre-fill name from URL
+    const params = new URLSearchParams(window.location.search);
+    const nameParam = params.get('name');
+    if (nameParam) {
+      document.getElementById('pickupName').value = nameParam;
+      document.getElementById('prereserveName').value = nameParam;
+      showScreen('prereserve');
     }
+    const refParam = params.get('ref');
+    if (refParam) document.getElementById('reservationRef').value = refParam;
+  });
 
-    /* ── Category Filter ── */
-    function filterCategory(cat) {
-      // Update active tab
-      document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      event.target.classList.add('active');
+  // ── SCREEN SWITCHING ──
+  function showScreen(which) {
+    document.getElementById('orderTypeScreen').style.display = which === 'choose' ? 'block' : 'none';
+    document.getElementById('pickupScreen').style.display    = which === 'pickup'  ? 'block' : 'none';
+    document.getElementById('prereserveScreen').style.display = which === 'prereserve' ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-      const items = document.querySelectorAll('.menu-item');
-      const sections = document.querySelectorAll('.menu-section');
-
-      if (cat === 'all') {
-        items.forEach(item => item.style.display = '');
-        sections.forEach(sec => sec.style.display = '');
-        return;
-      }
-
-      let visibleSections = new Set();
-      items.forEach(item => {
-        const categories = item.dataset.category || '';
-        if (categories.includes(cat)) {
-          item.style.display = '';
-          visibleSections.add(item.closest('.menu-section'));
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      sections.forEach(sec => {
-        sec.style.display = visibleSections.has(sec) ? '' : 'none';
-      });
+  // ── CATEGORY FILTER ──
+  function filterCategory(tabEl, cat, scope) {
+    const tabsId = scope === 'pickup' ? 'pickupTabs' : 'prereserveTabs';
+    document.getElementById(tabsId).querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    const menuId = scope === 'pickup' ? 'pickupMenu' : 'prereserveMenuInner';
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+    const sections = menu.querySelectorAll('.menu-section');
+    const items    = menu.querySelectorAll('.menu-item');
+    if (cat === 'all') {
+      items.forEach(i => i.style.display = '');
+      sections.forEach(s => s.style.display = '');
+      return;
     }
+    const visibleSections = new Set();
+    items.forEach(item => {
+      const cats = item.dataset.category || '';
+      const show = cats.includes(cat);
+      item.style.display = show ? '' : 'none';
+      if (show) visibleSections.add(item.closest('.menu-section'));
+    });
+    sections.forEach(s => s.style.display = visibleSections.has(s) ? '' : 'none');
+  }
 
-    function changeQty(btn, delta) {
-      const controls = btn.closest('.qty-controls');
-      const valEl = controls.querySelector('.qty-val');
-      let val = parseInt(valEl.textContent) + delta;
-      if (val < 0) val = 0;
-      if (val > 20) val = 20;
-      valEl.textContent = val;
-      updateSummary();
-    }
+  // ── NOTE TOGGLE ──
+  function toggleNote(el) {
+    const wrap = el.nextElementSibling;
+    wrap.classList.toggle('open');
+    el.textContent = wrap.classList.contains('open') ? '− Remove note' : '+ Add special request';
+  }
 
-    function updateSummary() {
-      const items = document.querySelectorAll('.menu-item');
-      const summaryEl = document.getElementById('summaryItems');
-      const totalEl = document.getElementById('totalPrice');
-      const btn = document.getElementById('placeOrderBtn');
-      let html = '';
-      let total = 0;
-      let hasItems = false;
+  // ── QTY ──
+  function changeQty(btn, delta, scope) {
+    const valEl = btn.closest('.qty-controls').querySelector('.qty-val');
+    let val = parseInt(valEl.textContent) + delta;
+    if (val < 0) val = 0;
+    if (val > 20) val = 20;
+    valEl.textContent = val;
+    updateSummary(scope);
+  }
 
-      items.forEach(item => {
-        const qty = parseInt(item.querySelector('.qty-val').textContent);
-        if (qty > 0) {
-          hasItems = true;
-          const name = item.dataset.name;
-          const price = parseFloat(item.dataset.price);
-          const lineTotal = qty * price;
-          total += lineTotal;
-          html += `<div class="summary-row"><span>${name} × ${qty}</span><span>$${lineTotal.toFixed(2)}</span></div>`;
-        }
-      });
-
-      if (!hasItems) {
-        html = '<div class="summary-row"><span>No items added yet</span><span>—</span></div>';
-      }
-
-      summaryEl.innerHTML = html;
-      totalEl.textContent = `$${total.toFixed(2)}`;
-      btn.disabled = !hasItems;
-    }
-
-    async function placeOrder() {
-      const btn = document.getElementById('placeOrderBtn');
-      const originalText = btn.innerText;
-      const name = document.getElementById('pickupName').value || "Guest";
-      const time = document.getElementById('pickupTime').value || "Not specified";
-      const total = document.getElementById('totalPrice').textContent;
-
-      btn.innerText = "Placing Order...";
-      btn.disabled = true;
-
-      // Get order items for email
-      const items = [];
-      document.querySelectorAll('.menu-item').forEach(item => {
-        const qty = parseInt(item.querySelector('.qty-val').textContent);
-        if (qty > 0) items.push(`${item.dataset.name} (x${qty})`);
-      });
-
-      if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-        try {
-          await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, {
-            name: name,
-            email: "customer@website.com",
-            title: "New Pickup Order",
-            message: `Items: ${items.join(", ")}
-            Total: ${total}
-            Pickup: ${time}`
-          });
-        } catch (err) {
-          console.error("Email failed:", err);
-        }
-      }
-
-      const overlay = document.getElementById('successOverlay');
-      overlay.style.display = 'flex';
-    }
-
-    updateSummary();
-
-    // Auto-filter category from URL param on load
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const cat = urlParams.get('cat');
-      if (cat) {
-        const tabs = document.querySelectorAll('.filter-tab');
-        tabs.forEach(tab => {
-          const onClickAttr = tab.getAttribute('onclick') || '';
-          if (onClickAttr.includes(`'${cat}'`)) {
-            tab.click();
-          }
-        });
+  // ── SUMMARY ──
+  function updateSummary(scope) {
+    const menuId   = scope === 'pickup' ? 'pickupMenu' : 'prereserveMenuInner';
+    const summId   = scope === 'pickup' ? 'pickupSummaryItems' : 'prereserveSummaryItems';
+    const totalId  = scope === 'pickup' ? 'pickupTotal' : 'prereserveTotal';
+    const btnId    = scope === 'pickup' ? 'pickupOrderBtn' : 'prereserveOrderBtn';
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+    const items = menu.querySelectorAll('.menu-item');
+    let html = '', total = 0, hasItems = false;
+    items.forEach(item => {
+      const qty = parseInt(item.querySelector('.qty-val').textContent);
+      if (qty > 0) {
+        hasItems = true;
+        const name  = item.dataset.name;
+        const price = parseFloat(item.dataset.price);
+        const note  = item.querySelector('.item-note')?.value?.trim();
+        const line  = qty * price;
+        total += line;
+        html += `<div class="summary-row"><div><span>${name} × ${qty}</span>${note ? `<div class="item-note-summary">"${note}"</div>` : ''}</div><span>$${line.toFixed(2)}</span></div>`;
       }
     });
-  </script>
+    if (!hasItems) html = '<div class="summary-row"><span>No items added yet</span><span>—</span></div>';
+    document.getElementById(summId).innerHTML = html;
+    document.getElementById(totalId).textContent = `$${total.toFixed(2)}`;
+    document.getElementById(btnId).disabled = !hasItems;
+  }
+
+  // ── READY ESTIMATE ──
+  function updateReadyEstimate() {
+    const sel = document.getElementById('pickupTime');
+    const val = sel.value;
+    const el  = document.getElementById('readyEstimate');
+    if (!val) { el.innerHTML = ''; return; }
+    if (val === '480' || val === '840') { el.innerHTML = `Your order will be prepared fresh and ready at your selected time.`; return; }
+    const mins = parseInt(val);
+    const ready = new Date(Date.now() + mins * 60000);
+    const h = ready.getHours().toString().padStart(2,'0');
+    const m = ready.getMinutes().toString().padStart(2,'0');
+    el.innerHTML = `Your order will be ready for collection at approximately <strong>${h}:${m}</strong>.`;
+  }
+
+  // ── RESERVATION REF LINK ──
+  function linkReservation() {
+    const ref = document.getElementById('reservationRef').value.trim();
+    const statusEl = document.getElementById('refStatus');
+    if (!ref) { statusEl.textContent = 'No reference entered — we will match by name at the restaurant.'; statusEl.style.color = '#6b5e50'; return; }
+    if (/^MDR-\d{4}$/i.test(ref)) {
+      statusEl.textContent = `✓ Reservation ${ref.toUpperCase()} linked. Your pre-order will be attached to this booking.`;
+      statusEl.style.color = '#4caf7d';
+    } else {
+      statusEl.textContent = 'Reference format should be MDR-XXXX. Check your confirmation email.';
+      statusEl.style.color = '#c0392b';
+    }
+  }
+
+  // ── PLACE ORDER ──
+  async function placeOrder(scope) {
+    const btnId = scope === 'pickup' ? 'pickupOrderBtn' : 'prereserveOrderBtn';
+    const btn   = document.getElementById(btnId);
+    btn.textContent = 'Placing Order...';
+    btn.disabled = true;
+
+    const menuId = scope === 'pickup' ? 'pickupMenu' : 'prereserveMenuInner';
+    const menu   = document.getElementById(menuId);
+    const items  = [];
+    let   total  = 0;
+    menu.querySelectorAll('.menu-item').forEach(item => {
+      const qty = parseInt(item.querySelector('.qty-val').textContent);
+      if (qty > 0) {
+        const note = item.querySelector('.item-note')?.value?.trim();
+        const price = parseFloat(item.dataset.price);
+        total += qty * price;
+        items.push(`${item.dataset.name} ×${qty}${note ? ` [${note}]` : ''}`);
+      }
+    });
+
+    const name  = scope === 'pickup'
+      ? (document.getElementById('pickupName').value || 'Guest')
+      : (document.getElementById('prereserveName').value || 'Guest');
+    const time  = scope === 'pickup'
+      ? (document.getElementById('pickupTime').options[document.getElementById('pickupTime').selectedIndex]?.text || 'Not specified')
+      : 'Dine-in — served at table';
+    const notes = scope === 'prereserve'
+      ? (document.getElementById('prereserveNotes').value || '') : '';
+    const ref   = scope === 'pickup' ? `MDR-ORD-${Math.floor(1000+Math.random()*9000)}` : `MDR-PRE-${Math.floor(1000+Math.random()*9000)}`;
+    const resRef = scope === 'prereserve' ? (document.getElementById('reservationRef').value || 'Not provided') : '';
+
+    try {
+      await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, {
+        name, email: 'customer@website.com',
+        title: scope === 'pickup' ? `New Pickup Order — ${ref}` : `New Pre-order for Table — ${ref}`,
+        message: `Ref: ${ref}\nName: ${name}\nItems: ${items.join(', ')}\nTotal: $${total.toFixed(2)}\nCollection/Time: ${time}${resRef ? `\nReservation Ref: ${resRef}` : ''}${notes ? `\nNotes: ${notes}` : ''}`
+      });
+    } catch(e) { console.error('Email failed:', e); }
+
+    // Build success screen
+    const isPickup = scope === 'pickup';
+    document.getElementById('successTypeLabel').textContent = isPickup ? 'Pickup Order' : 'Dine-In Pre-order';
+    document.getElementById('successTitle').textContent     = isPickup ? 'Order Confirmed!' : 'Pre-order Confirmed!';
+    document.getElementById('successRef').textContent       = ref;
+    document.getElementById('successMsg').textContent       = isPickup
+      ? 'Your order is being prepared. Come collect it at your chosen time — we\'ll have it fresh and ready.'
+      : 'Your dishes are locked in. When you arrive and are seated, your order will come out in perfect time.';
+
+    let summHTML = `<div class="success-summary-row"><span>Name</span><span>${name}</span></div>`;
+    items.forEach(i => { summHTML += `<div class="success-summary-row"><span>${i.split('×')[0].trim()}</span><span>×${i.split('×')[1]?.split('[')[0].trim()}</span></div>`; });
+    summHTML += `<div class="success-summary-row"><span>Total</span><span>$${total.toFixed(2)}</span></div>`;
+    if (!isPickup && resRef && resRef !== 'Not provided') summHTML += `<div class="success-summary-row"><span>Reservation</span><span>${resRef}</span></div>`;
+    document.getElementById('successSummary').innerHTML = summHTML;
+
+    const readyEl = document.getElementById('successReadyBadge');
+    if (isPickup && document.getElementById('pickupTime').value && parseInt(document.getElementById('pickupTime').value) < 200) {
+      const mins  = parseInt(document.getElementById('pickupTime').value);
+      const ready = new Date(Date.now() + mins * 60000);
+      const h = ready.getHours().toString().padStart(2,'0');
+      const m = ready.getMinutes().toString().padStart(2,'0');
+      readyEl.innerHTML = `Ready for collection at <strong>${h}:${m}</strong>`;
+    } else {
+      readyEl.innerHTML = isPickup ? 'Ready at your selected time.' : 'Served at your table — no waiting.';
+    }
+
+    // show/hide reserve link
+    document.getElementById('successReserveLink').style.display = isPickup ? 'block' : 'none';
+
+    document.getElementById('successOverlay').style.display = 'flex';
+  }
+
+  function resetAll() {
+    location.reload();
+  }
+</script>
 </body>
 </html>

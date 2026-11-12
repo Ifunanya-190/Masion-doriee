@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reserve a Table — Maison Dorée</title>
-  <meta name="description" content="Reserve your table at Maison Dorée. Experience exquisite fine dining in an intimate, elegant setting." />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,17 +19,15 @@
     }
     .page-glow {
       position: fixed;
-      top: -30%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
+      top: -30%; right: -10%;
+      width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(200,100,20,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
     .card {
       background: linear-gradient(165deg, #141210 0%, #0e0c0a 100%);
       border: 1px solid rgba(232,217,192,0.07);
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
       padding: 48px 40px;
       position: relative;
@@ -55,19 +52,14 @@
       text-decoration: none;
       margin-bottom: 24px;
       transition: color 0.3s;
-      font-family: 'Montserrat', sans-serif;
     }
-    .back-link:hover {
-      color: #d48a2c;
-    }
+    .back-link:hover { color: #d48a2c; }
     .brand {
       font-family: 'Great Vibes', cursive;
       font-size: 26px;
-      font-weight: 400;
       color: #d48a2c;
-      letter-spacing: 0.02em;
-      margin-bottom: 32px;
       text-align: center;
+      margin-bottom: 28px;
     }
     .tag {
       font-size: 9px;
@@ -80,32 +72,169 @@
     }
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 700;
       color: #f0e6d0;
       text-align: center;
       line-height: 1.15;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .subtitle {
       font-size: 12px;
       color: #7a6a5a;
       text-align: center;
       line-height: 1.7;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
     }
-    .form-group {
+
+    /* STEP INDICATOR */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-circle {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,217,192,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+      color: #5a4e42;
+      transition: all 0.4s;
+    }
+    .step-circle.active {
+      background: #d48a2c;
+      border-color: #d48a2c;
+      color: #0a0908;
+      box-shadow: 0 0 16px rgba(212,138,44,0.3);
+    }
+    .step-circle.done {
+      background: rgba(212,138,44,0.15);
+      border-color: rgba(212,138,44,0.4);
+      color: #d48a2c;
+    }
+    .step-label {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4a3e32;
+      transition: color 0.4s;
+    }
+    .step-label.active { color: #d48a2c; }
+    .step-line {
+      width: 60px; height: 1px;
+      background: rgba(232,217,192,0.08);
+      margin: 0 8px;
+      margin-bottom: 20px;
+      transition: background 0.4s;
+    }
+    .step-line.done { background: rgba(212,138,44,0.3); }
+
+    /* OCCASION PILLS */
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       margin-bottom: 20px;
     }
+    .occasion-pill {
+      padding: 10px 12px;
+      border: 1px solid rgba(232,217,192,0.1);
+      background: transparent;
+      color: #7a6a5a;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .occasion-pill:hover { border-color: rgba(212,138,44,0.3); color: #c8b99a; }
+    .occasion-pill.selected {
+      border-color: #d48a2c;
+      background: rgba(212,138,44,0.08);
+      color: #d48a2c;
+    }
+    .occasion-icon { font-size: 14px; }
+
+    /* AVAILABILITY DOTS */
+    .time-option-wrap { position: relative; }
+    .avail-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .dot-green  { background: #4caf7d; }
+    .dot-amber  { background: #e8a030; }
+    .dot-red    { background: #c0392b; }
+
+    /* LARGE PARTY NOTICE */
+    .large-party-notice {
+      display: none;
+      background: rgba(212,138,44,0.06);
+      border: 1px solid rgba(212,138,44,0.2);
+      padding: 14px 16px;
+      margin-top: -8px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #9a8878;
+      line-height: 1.7;
+    }
+    .large-party-notice a {
+      color: #d48a2c;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* FORM */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    .form-group { margin-bottom: 20px; }
     label {
       display: block;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 10px; font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #9a8878;
       margin-bottom: 8px;
     }
+    .field-wrap { position: relative; }
+    .field-tick {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .field-tick.valid   { color: #4caf7d; opacity: 1; }
+    .field-tick.invalid { color: #c0392b; opacity: 1; }
+    .field-msg {
+      font-size: 10px;
+      margin-top: 5px;
+      min-height: 14px;
+      transition: all 0.3s;
+      letter-spacing: 0.04em;
+    }
+    .field-msg.err { color: #c0392b; }
+    .field-msg.ok  { color: #4caf7d; }
+
     input, select {
       width: 100%;
       background: #0a0908;
@@ -113,242 +242,575 @@
       color: #e8d9c0;
       font-family: 'Montserrat', sans-serif;
       font-size: 14px;
-      padding: 14px 16px;
+      padding: 14px 40px 14px 16px;
       outline: none;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      appearance: none;
     }
-    input:focus, select:focus {
-      border-color: #d48a2c;
-    }
-    input::placeholder {
-      color: #4a3e32;
-    }
-    select option {
-      background: #0a0908;
-      color: #e8d9c0;
-    }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    input:focus, select:focus { border-color: #d48a2c; box-shadow: 0 0 0 3px rgba(212,138,44,0.06); }
+    input.valid   { border-color: rgba(76,175,125,0.5); }
+    input.invalid { border-color: rgba(192,57,43,0.5); }
+    input::placeholder { color: #4a3e32; }
+    select option { background: #0a0908; color: #e8d9c0; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* BUTTONS */
+    .btn-row { display: flex; gap: 10px; margin-top: 8px; }
     .btn {
-      width: 100%;
+      flex: 1;
       background: #d48a2c;
       color: #0a0908;
       border: none;
       padding: 16px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 11px; font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.35s;
-      margin-top: 8px;
     }
-    .btn:hover {
-      background: #e89c3a;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 30px rgba(212,138,44,0.2);
+    .btn:hover { background: #e89c3a; transform: translateY(-1px); box-shadow: 0 8px 30px rgba(212,138,44,0.2); }
+    .btn:disabled { background: #3d3228; color: #7a6a5a; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-ghost {
+      flex: 0.6;
+      background: transparent;
+      border: 1px solid rgba(232,217,192,0.12);
+      color: #7a6a5a;
+      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
     }
+    .btn-ghost:hover { border-color: rgba(212,138,44,0.3); color: #c8b99a; }
+
     .footer-note {
       font-size: 10px;
       color: #3d3228;
       text-align: center;
-      margin-top: 24px;
+      margin-top: 20px;
       line-height: 1.7;
     }
-    .footer-note a {
-      color: #7a6a5a;
-      text-decoration: none;
-    }
-    .success-state {
-      display: none;
-      text-align: center;
-      padding: 40px 0;
-    }
-    .success-state .check {
-      width: 64px;
-      height: 64px;
+    .footer-note a { color: #7a6a5a; text-decoration: none; }
+
+    /* SUCCESS */
+    .success-state { display: none; text-align: center; padding: 20px 0; animation: fadeUp 0.5s ease; }
+    .check-circle {
+      width: 72px; height: 72px;
       border-radius: 50%;
-      background: rgba(212,138,44,0.1);
+      background: rgba(212,138,44,0.08);
       border: 2px solid #d48a2c;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 30px; color: #d48a2c;
+      animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-state h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: #f0e6d0; margin-bottom: 10px; }
+    .success-state p { font-size: 13px; color: #7a6a5a; line-height: 1.75; margin-bottom: 6px; }
+
+    .ref-badge {
+      display: inline-block;
+      background: rgba(212,138,44,0.1);
+      border: 1px solid rgba(212,138,44,0.25);
+      padding: 8px 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #d48a2c;
+      letter-spacing: 0.08em;
+      margin: 16px 0 20px;
+    }
+
+    .booking-summary {
+      background: #0f0d0b;
+      border: 1px solid rgba(232,217,192,0.06);
+      padding: 18px 20px;
+      text-align: left;
+      margin: 20px 0;
+    }
+    .booking-summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6b5e50;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(232,217,192,0.04);
+    }
+    .booking-summary-row:last-child { border-bottom: none; }
+    .booking-summary-row span:last-child { color: #c8b99a; font-weight: 500; }
+
+    .occasion-msg {
+      font-size: 12px;
+      color: #9a8878;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      margin: 8px 0 16px;
+      line-height: 1.6;
+    }
+
+    .success-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+    .cal-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 28px;
+      gap: 8px;
+      padding: 13px;
+      border: 1px solid rgba(212,138,44,0.2);
+      background: transparent;
       color: #d48a2c;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
     }
-    .success-state h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      color: #f0e6d0;
-      margin-bottom: 12px;
-    }
-    .success-state p {
-      font-size: 13px;
+    .cal-btn:hover { background: rgba(212,138,44,0.08); }
+    .preorder-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px;
+      border: 1px solid rgba(232,217,192,0.08);
+      background: transparent;
       color: #7a6a5a;
-      line-height: 1.7;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .preorder-btn:hover { border-color: rgba(212,138,44,0.2); color: #c8b99a; }
+
+    .door-note {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 11px;
+      color: #5a4e42;
+      letter-spacing: 0.04em;
+    }
+    .door-note strong { color: #8a7a68; }
+
+    @media (max-width: 480px) {
+      .card { padding: 36px 24px; }
+      .row { grid-template-columns: 1fr; }
+      .occasion-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="page-glow"></div>
-  <div class="card">
-    <a href="/" class="back-link">← Back to Website</a>
-    <div class="brand">Maison Dorée</div>
+<div class="page-glow"></div>
+<div class="card">
+  <a href="/" class="back-link">← Back to Website</a>
+  <div class="brand">Maison Dorée</div>
 
-    <div id="formView">
-      <div class="tag">Table Reservation</div>
-      <h1>Reserve Your Table</h1>
-      <p class="subtitle">Secure your spot and savour the moment. Walk-ins welcome, but reservations guarantee the finest experience.</p>
+  <!-- FORM VIEW -->
+  <div id="formView">
+    <div class="tag">Table Reservation</div>
+    <h1>Reserve Your Table</h1>
+    <p class="subtitle">Secure your spot and savour the moment. Walk-ins welcome, but reservations guarantee the finest experience.</p>
 
-      <form id="reserveForm" onsubmit="handleSubmit(event)">
+    <!-- STEP INDICATOR -->
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-circle active" id="sc1">1</div>
+        <div class="step-label active" id="sl1">Your Details</div>
+      </div>
+      <div class="step-line" id="sline"></div>
+      <div class="step-item">
+        <div class="step-circle" id="sc2">2</div>
+        <div class="step-label" id="sl2">Date & Time</div>
+      </div>
+    </div>
+
+    <form id="reserveForm" onsubmit="return false;">
+
+      <!-- STEP 1 -->
+      <div class="step-panel active" id="step1">
+
+        <!-- OCCASION -->
         <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" placeholder="e.g. Jean-Luc Moreau" required />
+          <label>What's the Occasion?</label>
+          <div class="occasion-grid">
+            <button type="button" class="occasion-pill" data-occasion="dining" onclick="selectOccasion(this)">
+              <span class="occasion-icon">🍽</span> Just Dining
+            </button>
+            <button type="button" class="occasion-pill" data-occasion="birthday" onclick="selectOccasion(this)">
+              <span class="occasion-icon">🎂</span> Birthday
+            </button>
+            <button type="button" class="occasion-pill" data-occasion="anniversary" onclick="selectOccasion(this)">
+              <span class="occasion-icon">🥂</span> Anniversary
+            </button>
+            <button type="button" class="occasion-pill" data-occasion="business" onclick="selectOccasion(this)">
+              <span class="occasion-icon">💼</span> Business Dinner
+            </button>
+            <button type="button" class="occasion-pill" data-occasion="date" onclick="selectOccasion(this)">
+              <span class="occasion-icon">🌹</span> Date Night
+            </button>
+            <button type="button" class="occasion-pill" data-occasion="celebration" onclick="selectOccasion(this)">
+              <span class="occasion-icon">✨</span> Celebration
+            </button>
+          </div>
         </div>
 
+        <!-- NAME -->
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <div class="field-wrap">
+            <input type="text" id="fullName" placeholder="e.g. Jean-Luc Moreau"
+              oninput="validateField(this, 'name')" onblur="validateField(this, 'name')" />
+            <span class="field-tick" id="tick-fullName"></span>
+          </div>
+          <div class="field-msg" id="msg-fullName"></div>
+        </div>
+
+        <!-- EMAIL + PHONE -->
         <div class="row">
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="you@email.com" required />
+            <div class="field-wrap">
+              <input type="email" id="email" placeholder="you@email.com"
+                oninput="validateField(this, 'email')" onblur="validateField(this, 'email')" />
+              <span class="field-tick" id="tick-email"></span>
+            </div>
+            <div class="field-msg" id="msg-email"></div>
           </div>
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="+44 7123 456 789" required />
+            <div class="field-wrap">
+              <input type="tel" id="phone" placeholder="+44 7123 456 789"
+                oninput="validateField(this, 'phone')" onblur="validateField(this, 'phone')" />
+              <span class="field-tick" id="tick-phone"></span>
+            </div>
+            <div class="field-msg" id="msg-phone"></div>
           </div>
         </div>
 
+        <div class="btn-row">
+          <button type="button" class="btn" onclick="goStep2()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-panel" id="step2">
+
+        <!-- DATE + TIME -->
         <div class="row">
           <div class="form-group">
             <label for="date">Date</label>
-            <input type="date" id="date" required />
+            <div class="field-wrap">
+              <input type="date" id="date" onchange="validateField(this,'date')" onblur="validateField(this,'date')" />
+              <span class="field-tick" id="tick-date"></span>
+            </div>
+            <div class="field-msg" id="msg-date"></div>
           </div>
           <div class="form-group">
             <label for="time">Preferred Time</label>
-            <select id="time" required>
-              <option value="">Select a time</option>
-              <option value="08:00">8:00 AM — Morning</option>
-              <option value="09:00">9:00 AM</option>
-              <option value="10:00">10:00 AM</option>
-              <option value="11:00">11:00 AM — Brunch</option>
-              <option value="12:00">12:00 PM — Lunch</option>
-              <option value="13:00">1:00 PM</option>
-              <option value="14:00">2:00 PM</option>
-              <option value="15:00">3:00 PM — Afternoon Tea</option>
-              <option value="16:00">4:00 PM</option>
-              <option value="17:00">5:00 PM</option>
-              <option value="18:00">6:00 PM — Dinner</option>
-              <option value="19:00">7:00 PM</option>
-              <option value="20:00">8:00 PM</option>
-            </select>
+            <div class="field-wrap time-option-wrap">
+              <select id="time" onchange="validateField(this,'req')" onblur="validateField(this,'req')">
+                <option value="">Select a time</option>
+                <option value="08:00" data-avail="green">8:00 AM — Morning</option>
+                <option value="09:00" data-avail="green">9:00 AM</option>
+                <option value="10:00" data-avail="amber">10:00 AM</option>
+                <option value="11:00" data-avail="amber">11:00 AM — Brunch</option>
+                <option value="12:00" data-avail="red">12:00 PM — Lunch</option>
+                <option value="13:00" data-avail="red">1:00 PM</option>
+                <option value="14:00" data-avail="amber">2:00 PM</option>
+                <option value="15:00" data-avail="green">3:00 PM — Afternoon Tea</option>
+                <option value="16:00" data-avail="green">4:00 PM</option>
+                <option value="17:00" data-avail="amber">5:00 PM</option>
+                <option value="18:00" data-avail="red">6:00 PM — Dinner</option>
+                <option value="19:00" data-avail="red">7:00 PM</option>
+                <option value="20:00" data-avail="amber">8:00 PM</option>
+              </select>
+              <span class="field-tick" id="tick-time"></span>
+            </div>
+            <div class="field-msg" id="msg-time" style="display:flex;align-items:center;gap:5px;"></div>
           </div>
         </div>
 
+        <!-- GUESTS -->
         <div class="form-group">
           <label for="guests">Number of Guests</label>
-          <select id="guests" required>
-            <option value="">Choose party size</option>
-            <option value="1">1 Guest</option>
-            <option value="2">2 Guests</option>
-            <option value="3">3 Guests</option>
-            <option value="4">4 Guests</option>
-            <option value="5">5 Guests</option>
-            <option value="6">6 Guests</option>
-            <option value="7-8">7 — 8 Guests</option>
-            <option value="9+">9+ Guests (Large Party)</option>
-          </select>
+          <div class="field-wrap">
+            <select id="guests" onchange="onGuestsChange(this)" onblur="validateField(this,'req')">
+              <option value="">Choose party size</option>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests</option>
+              <option value="6">6 Guests</option>
+              <option value="7-8">7 — 8 Guests</option>
+              <option value="9+">9+ Guests (Large Party)</option>
+            </select>
+            <span class="field-tick" id="tick-guests"></span>
+          </div>
+          <div class="field-msg" id="msg-guests"></div>
         </div>
 
+        <!-- LARGE PARTY NOTICE -->
+        <div class="large-party-notice" id="largePartyNotice">
+          For parties of 7 or more we recommend calling ahead to ensure we can seat everyone together.
+          <br/><a href="tel:+442071234567">Call +44 20 7123 4567 →</a>
+        </div>
+
+        <!-- NOTES -->
         <div class="form-group">
           <label for="notes">Special Requests (Optional)</label>
-          <input type="text" id="notes" placeholder="Allergies, celebrations, seating preference..." />
+          <div class="field-wrap">
+            <input type="text" id="notes" placeholder="Allergies, celebrations, seating preference..." />
+          </div>
         </div>
 
-        <button type="submit" class="btn">Confirm Reservation</button>
-      </form>
-      <p class="footer-note">By reserving, you agree to our cancellation policy.<br/>Need help? <a href="mailto:hello@maisondoree.com">hello@maisondoree.com</a></p>
-    </div>
+        <div class="btn-row">
+          <button type="button" class="btn-ghost" onclick="goStep1()">← Back</button>
+          <button type="button" class="btn" id="submitBtn" onclick="handleSubmit()">Confirm Reservation</button>
+        </div>
+      </div>
 
-    <div class="success-state" id="successView">
-      <div class="check">✓</div>
-      <h2>You're All Set</h2>
-      <p>Your reservation has been confirmed. A confirmation email is on its way. We look forward to welcoming you.</p>
-      <button class="btn" style="margin-top: 32px;" onclick="resetForm()">Make Another Reservation</button>
-    </div>
+    </form>
+    <p class="footer-note">By reserving, you agree to our cancellation policy.<br/>
+      Need help? <a href="mailto:hello@maisondoree.com">hello@maisondoree.com</a></p>
   </div>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    // EMAILJS CONFIG - Replace with your own keys from emailjs.com
-    const EMAIL_CONFIG = {
-      SERVICE_ID: "service_dgigp18",
-      TEMPLATE_ID: "template_7up07qm",
-      PUBLIC_KEY: "w9XKj8v7KhAtFlQYt"
-    };
+  <!-- SUCCESS VIEW -->
+  <div class="success-state" id="successView">
+    <div class="check-circle">✓</div>
+    <h2>You're All Set</h2>
+    <div class="ref-badge" id="refNumber">MDR-0000</div>
+    <p id="occasionMsg" class="occasion-msg"></p>
+    <p>A confirmation email is on its way. Please keep your reference number handy.</p>
+
+    <div class="booking-summary" id="bookingSummary"></div>
+
+    <span class="door-note" id="doorNote"></span>
+
+    <div class="success-actions">
+      <a id="calBtn" class="cal-btn" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Add to Google Calendar
+      </a>
+      <a href="/order.html" class="preorder-btn" id="preorderBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Pre-order from the Menu
+      </a>
+      <button class="btn" onclick="resetForm()" style="margin-top:4px;">Make Another Reservation</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  const EMAIL_CONFIG = {
+    SERVICE_ID: "service_dgigp18",
+    TEMPLATE_ID: "template_7up07qm",
+    PUBLIC_KEY: "w9XKj8v7KhAtFlQYt"
+  };
+  if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+    emailjs.init({ publicKey: EMAIL_CONFIG.PUBLIC_KEY });
+  }
+
+  // Set min date to today
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  let selectedOccasion = "";
+
+  const OCCASION_MESSAGES = {
+    dining:      "We look forward to welcoming you for a wonderful meal.",
+    birthday:    "We'll make sure your birthday is one to remember. Our team will have something special waiting.",
+    anniversary: "Congratulations! We'll do everything to make your anniversary an unforgettable evening.",
+    business:    "We'll ensure a private, comfortable setting perfect for your business dinner.",
+    date:        "We'll set the mood — candlelight, quiet corners, and our finest menu.",
+    celebration: "Every celebration deserves the finest touch. We can't wait to celebrate with you."
+  };
+
+  const AVAIL_TEXT = { green: "Available", amber: "Filling up", red: "Almost full" };
+  const AVAIL_COLOR = { green: "#4caf7d", amber: "#e8a030", red: "#c0392b" };
+
+  function selectOccasion(el) {
+    document.querySelectorAll('.occasion-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedOccasion = el.dataset.occasion;
+  }
+
+  // ── VALIDATION ──
+  function validateField(el, type) {
+    const id = el.id;
+    const val = el.value.trim();
+    const tick = document.getElementById('tick-' + id);
+    const msg  = document.getElementById('msg-'  + id);
+    let ok = false, text = "";
+
+    if (type === 'name') {
+      ok = val.length >= 2;
+      text = ok ? "Looks good" : val.length ? "Name must be at least 2 characters" : "Required";
+    } else if (type === 'email') {
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      text = ok ? "Valid email" : val.length ? "Enter a valid email address" : "Required";
+    } else if (type === 'phone') {
+      ok = val.replace(/\s/g,'').length >= 7;
+      text = ok ? "Looks good" : val.length ? "Enter a valid phone number" : "Required";
+    } else if (type === 'date') {
+      ok = val && val >= today;
+      text = ok ? "Great date" : val ? "Date must be today or later" : "Required";
+    } else if (type === 'req') {
+      ok = val !== "";
+      text = ok ? "" : "Please make a selection";
+    }
+
+    if (tick) { tick.textContent = ok ? "✓" : val ? "✗" : ""; tick.className = "field-tick " + (ok ? "valid" : val ? "invalid" : ""); }
+    if (msg)  { msg.textContent = text; msg.className = "field-msg " + (ok ? "ok" : val ? "err" : ""); }
+    if (el.tagName === "INPUT") { el.className = val ? (ok ? "valid" : "invalid") : ""; }
+
+    // Time availability dot
+    if (id === 'time' && val) {
+      const opt = el.options[el.selectedIndex];
+      const avail = opt.dataset.avail || "green";
+      const dotHtml = `<span class="avail-dot dot-${avail}"></span><span style="font-size:10px;color:${AVAIL_COLOR[avail]}">${AVAIL_TEXT[avail]}</span>`;
+      if (msg) { msg.innerHTML = dotHtml; msg.className = "field-msg"; }
+    }
+
+    return ok;
+  }
+
+  function onGuestsChange(el) {
+    validateField(el, 'req');
+    const notice = document.getElementById('largePartyNotice');
+    notice.style.display = (el.value === '7-8' || el.value === '9+') ? 'block' : 'none';
+  }
+
+  // ── STEP NAVIGATION ──
+  function goStep2() {
+    const v1 = validateField(document.getElementById('fullName'), 'name');
+    const v2 = validateField(document.getElementById('email'), 'email');
+    const v3 = validateField(document.getElementById('phone'), 'phone');
+    if (!v1 || !v2 || !v3) return;
+
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('sc1').classList.replace('active', 'done'); document.getElementById('sc1').textContent = '✓';
+    document.getElementById('sl1').classList.remove('active');
+    document.getElementById('sc2').classList.add('active');
+    document.getElementById('sl2').classList.add('active');
+    document.getElementById('sline').classList.add('done');
+  }
+
+  function goStep1() {
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('sc2').classList.remove('active');
+    document.getElementById('sl2').classList.remove('active');
+    document.getElementById('sc1').classList.replace('done', 'active'); document.getElementById('sc1').textContent = '1';
+    document.getElementById('sl1').classList.add('active');
+    document.getElementById('sline').classList.remove('done');
+  }
+
+  // ── GENERATE CONFIRMATION REF ──
+  function genRef() {
+    return 'MDR-' + Math.floor(1000 + Math.random() * 9000);
+  }
+
+  // ── BUILD GOOGLE CALENDAR LINK ──
+  function buildCalLink(date, time, guests, name) {
+    const [h, m] = time.split(':').map(Number);
+    const start = new Date(date + 'T' + time + ':00');
+    const end   = new Date(start.getTime() + 90 * 60000);
+    const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+    const title = encodeURIComponent('Dinner at Maison Dorée');
+    const details = encodeURIComponent(`Reservation for ${guests} — Ref: ${genRef()}\nMaison Dorée, 124 Artisan Way, London`);
+    const location = encodeURIComponent('124 Artisan Way, London, EC1A 1BB');
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
+  }
+
+  // ── SUBMIT ──
+  async function handleSubmit() {
+    const dateOk   = validateField(document.getElementById('date'),   'date');
+    const timeOk   = validateField(document.getElementById('time'),   'req');
+    const guestsOk = validateField(document.getElementById('guests'), 'req');
+    if (!dateOk || !timeOk || !guestsOk) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = "Sending...";
+    btn.disabled = true;
+
+    const name   = document.getElementById('fullName').value;
+    const email  = document.getElementById('email').value;
+    const phone  = document.getElementById('phone').value;
+    const date   = document.getElementById('date').value;
+    const time   = document.getElementById('time').value;
+    const guests = document.getElementById('guests').value;
+    const notes  = document.getElementById('notes').value;
+    const ref    = genRef();
 
     if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-      emailjs.init({ publicKey: EMAIL_CONFIG.PUBLIC_KEY });
-    }
-
-    // Set min date to today
-    const dateInput = document.getElementById('date');
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.setAttribute('min', today);
-
-    async function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      const originalText = btn.innerText;
-      btn.innerText = "Sending...";
-      btn.disabled = true;
-
-      const formData = {
-        fullName: document.getElementById('fullName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        date: document.getElementById('date').value,
-        time: document.getElementById('time').value,
-        guests: document.getElementById('guests').value,
-        notes: document.getElementById('notes').value
-      };
-
-      if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-        try {
-          await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, {
-            name: formData.fullName,
-            email: formData.email,
-            title: "New Table Reservation",
-            message: `Reservation Details:
-            Date: ${formData.date}
-            Time: ${formData.time}
-            Guests: ${formData.guests}
-            Phone: ${formData.phone}
-            Notes: ${formData.notes}`
-          });
-        } catch (err) {
-          console.error("Email failed:", err);
-          alert("Email notification failed to send, but we've logged your request locally.");
-        }
-      } else {
-        console.warn("EmailJS keys missing. Skipping real email.");
+      try {
+        await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, {
+          name, email,
+          title: `New Table Reservation — ${ref}`,
+          message: `Ref: ${ref}\nOccasion: ${selectedOccasion || 'Not specified'}\nDate: ${date}\nTime: ${time}\nGuests: ${guests}\nPhone: ${phone}\nNotes: ${notes || 'None'}`
+        });
+      } catch (err) {
+        console.error("Email failed:", err);
       }
-
-      document.getElementById('formView').style.display = 'none';
-      document.getElementById('successView').style.display = 'block';
     }
 
-    function resetForm() {
-      document.getElementById('reserveForm').reset();
-      document.getElementById('formView').style.display = 'block';
-      document.getElementById('successView').style.display = 'none';
-      const btn = document.querySelector('#reserveForm button');
-      btn.innerText = "Confirm Reservation";
-      btn.disabled = false;
-    }
-  </script>
+    // Populate success screen
+    document.getElementById('refNumber').textContent = ref;
+    document.getElementById('occasionMsg').textContent = OCCASION_MESSAGES[selectedOccasion] || OCCASION_MESSAGES.dining;
+
+    // Booking summary
+    const timeLabel = document.getElementById('time').options[document.getElementById('time').selectedIndex].text;
+    const [yr, mo, dy] = date.split('-');
+    const prettyDate = new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    document.getElementById('bookingSummary').innerHTML = `
+      <div class="booking-summary-row"><span>Name</span><span>${name}</span></div>
+      <div class="booking-summary-row"><span>Date</span><span>${prettyDate}</span></div>
+      <div class="booking-summary-row"><span>Time</span><span>${timeLabel.split('—')[0].trim()}</span></div>
+      <div class="booking-summary-row"><span>Guests</span><span>${guests}</span></div>
+      ${notes ? `<div class="booking-summary-row"><span>Requests</span><span>${notes}</span></div>` : ''}
+    `;
+
+    // Door note — 15 mins before
+    const [hh, mm] = time.split(':').map(Number);
+    const doorMin  = hh * 60 + mm - 15;
+    const doorH    = Math.floor(doorMin / 60).toString().padStart(2,'0');
+    const doorM    = (doorMin % 60).toString().padStart(2,'0');
+    document.getElementById('doorNote').innerHTML = `Doors open at <strong>${doorH}:${doorM}</strong>. Your table will be ready from <strong>${time}</strong>.`;
+
+    // Calendar link
+    document.getElementById('calBtn').href = buildCalLink(date, time, guests, name);
+
+    // Pre-order link with name pre-filled
+    document.getElementById('preorderBtn').href = `/order.html?name=${encodeURIComponent(name)}`;
+
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('successView').style.display = 'block';
+  }
+
+  function resetForm() {
+    document.getElementById('reserveForm').reset();
+    document.querySelectorAll('.occasion-pill').forEach(p => p.classList.remove('selected'));
+    selectedOccasion = "";
+    document.getElementById('largePartyNotice').style.display = 'none';
+    goStep1();
+    document.querySelectorAll('.field-tick').forEach(t => { t.textContent=''; t.className='field-tick'; });
+    document.querySelectorAll('.field-msg').forEach(m => { m.textContent=''; m.className='field-msg'; });
+    document.querySelectorAll('input').forEach(i => i.className='');
+    document.getElementById('submitBtn').textContent = "Confirm Reservation";
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('formView').style.display = 'block';
+    document.getElementById('successView').style.display = 'none';
+  }
+</script>
 </body>
 </html>
